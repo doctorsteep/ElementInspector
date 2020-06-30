@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.doctorsteep.elementinspector">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2543059856849154~8614667321"/>
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|screenSize|locale">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="http" android:path="/"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="https" android:path="/"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_settings"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize|locale"/>
+        <activity
+            android:name=".FeedbackActivity"
+            android:label="@string/title_feedback"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize|locale"/>
+        <activity
+            android:name=".HelpActivity"
+            android:label="@string/title_help"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize|locale"/>
+        <activity
+            android:name=".AboutAppActivity"
+            android:label="@string/title_about_app"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize|locale"/>
+        <activity
+            android:name=".RemoveAdsActivity"
+            android:label="@string/title_remove_ads"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize|locale"/>
+    </application>
+
+</manifest>

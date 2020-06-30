@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#22222C</color>
+    <color name="colorPrimaryDark">#22222C</color>
+    <color name="colorAccent">#439DF7</color>
+    <color name="colorControlNormal">#FFFFFF</color>
+    <color name="windowBackground">#0C0C0F</color>
+    <color name="iconCard">#FFFFFF</color>
+    <color name="iconBottomMenu">#FFFFFF</color>
+    <color name="textUrl">#070707</color>
+    <color name="textUrlBackground">#9EFFFFFF</color>
+    <color name="textNoLog">#A3FFFFFF</color>
+    <color name="cardViewBackground">#34FFFFFF</color>
+    <color name="bottomMenu">#22222C</color>
+
+    <color name="consoleMessage">#D5FFFFFF</color>
+    <color name="consoleSourceID">#1789F0</color>
+    <color name="consoleLinNumber">#DDFFFFFF</color>
+
+    <color name="alert_title">#000000</color>
+    <color name="alert_list_title">#000000</color>
+
+    <color name="help_title_background">#22FFFFFF</color>
+    <color name="help_title">#EBFFFFFF</color>
+    <color name="help_message">#8DFFFFFF</color>
+
+    <color name="about_app_name">#FFFFFF</color>
+    <color name="about_app_work">#8FFFFFFF</color>
+</resources>

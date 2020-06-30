@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_buy_purchase_receipt_credit_card_icon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/black"
+        android:text="@string/title_remove_ads"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="6dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/darker_gray"
+        android:text="@string/message_remove_ads"
+        android:gravity="center"
+        android:textStyle="normal"/>
+
+    <Button
+        android:id="@+id/btnBuySub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="25dp"
+        android:text="@string/action_remove_ads_btn"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorAccent"/>
+
+</LinearLayout>

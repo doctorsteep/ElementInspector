@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/actionConsole" android:title="@string/action_console"/>
+    <item android:id="@+id/actionContenteditable" android:title="@string/action_contenteditable" android:checkable="true"/>
+    <item android:id="@+id/actionHighlightBorder" android:title="@string/action_highlight_border" android:checkable="true"/>
+    <item android:id="@+id/actionSourcePage" android:title="@string/action_source_page"/>
+    <item android:id="@+id/actionDesktopVersion" android:title="@string/action_desktop_version" android:checkable="true"/>
+    <item android:id="@+id/actionSettings" android:title="@string/action_settings"/>
+    <item android:id="@+id/actionAdditions" android:title="@string/action_additions"/>
+    <item android:id="@+id/actionFeedback" android:title="@string/action_feedback"/>
+    <item android:id="@+id/actionHelp" android:title="@string/action_help"/>
+    <item android:id="@+id/actionExit" android:title="@string/action_exit"/>
+</menu>

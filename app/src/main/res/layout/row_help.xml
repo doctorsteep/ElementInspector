@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/linTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/help_title_background"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="13dp"
+            android:textColor="@color/help_title"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:text="Title default"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="13dp"
+            android:textColor="@color/help_message"
+            android:textSize="13sp"
+            android:textStyle="normal"
+            android:layout_weight="1"
+            android:text="Message default"/>
+
+    </LinearLayout>
+
+</LinearLayout>
