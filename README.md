@@ -1,7 +1,7 @@
 # Element Inspector
 
 
-## EI Content editable - [eiContentEditable.js](https://github.com/doctorsteep/ElementInspector/eiContentEditable.js)
+## EI Content editable - [eiContentEditable.js](eiContentEditable.js)
 ```javascript
 function setContenteditableOnEI() { // On content editable
 	document.getElementsByTagName('body')[0].setAttribute('contenteditable', 'true');
@@ -14,7 +14,7 @@ function setContenteditableOffEI() { // Off content editable
 > Редактирование елементов простым способом а именно изменение его как текст. **_setContenteditableOnEI()_** - `Включает редактирование`, **_setContenteditableOffEI()_** - `Выключает редактирование`
 
 
-## EI Highlight border - [eiHighlightBorder.js](https://github.com/doctorsteep/ElementInspector/eiHighlightBorder.js)
+## EI Highlight border - [eiHighlightBorder.js](eiHighlightBorder.js)
 ```javascript
 function setSourceElementOnEI() {
 	var bodyInnerElement = document.getElementsByTagName('body')[0].innerHTML;
@@ -38,7 +38,7 @@ function setSourceElementOffEI() {
 ```
 > Подсветка границ элементов. **_setSourceElementOnEI()_** - `Включает подсветку`, **_setSourceElementOffEI()_** - `Выключает подсветку`
 
-## EI Page source - [eiPageSource.js](https://github.com/doctorsteep/ElementInspector/eiPageSource.js)
+## EI Page source - [eiPageSource.js](eiPageSource.js)
 ```javascript
 function setEditSourcePageEI() {
 	var bodyInner = document.getElementsByTagName('body')[0].innerHTML;
@@ -65,3 +65,5 @@ function setEditSourcePageEI() {
 // Powered by DoctorSteep - from project ElementInspector
 ```
 > Просмотр кода страницы и его редактирование. **_setEditSourcePageEI()_** - `Открывает диалог с редактированием исходного кода страницы`
+
+[*СКАЧАТЬ ПРИЛОЖЕНИЕ*](https://play.google.com/store/apps/details?id=com.doctorsteep.elementinspector)
