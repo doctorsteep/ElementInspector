@@ -10,13 +10,9 @@
 
     <PreferenceCategory android:title="@string/preference_view">
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="keyViewBottomMenuBar"
             android:title="@string/preference_view_bottom_bar"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="keyViewBottomMenuBarButtons"
-            android:title="@string/preference_view_buttons_bottom_bar"/>
         <SwitchPreference
             android:defaultValue="true"
             android:key="keyLinkText"

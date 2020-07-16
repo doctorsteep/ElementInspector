@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#22222C</color>
-    <color name="colorPrimaryDark">#22222C</color>
-    <color name="colorAccent">#439DF7</color>
+    <color name="colorPrimary">#181818</color>
+    <color name="colorPrimaryDark">#181818</color>
+    <color name="colorAccent">#6287BE</color>
     <color name="colorControlNormal">#FFFFFF</color>
-    <color name="windowBackground">#0C0C0F</color>
+    <color name="windowBackground">#000000</color>
     <color name="iconCard">#FFFFFF</color>
     <color name="iconBottomMenu">#FFFFFF</color>
     <color name="textUrl">#070707</color>
     <color name="textUrlBackground">#9EFFFFFF</color>
     <color name="textNoLog">#A3FFFFFF</color>
     <color name="cardViewBackground">#34FFFFFF</color>
-    <color name="bottomMenu">#22222C</color>
+    <color name="bottomMenu">#181818</color>
 
     <color name="consoleMessage">#D5FFFFFF</color>
     <color name="consoleSourceID">#1789F0</color>
@@ -26,4 +26,9 @@
 
     <color name="about_app_name">#FFFFFF</color>
     <color name="about_app_work">#8FFFFFFF</color>
+
+    <color name="title_remove">#FFFFFF</color>
+    <color name="message_remove">#7AFFFFFF</color>
+
+    <color name="tint_divider_round">#52FFFFFF</color>
 </resources>

@@ -45,6 +45,10 @@ public class WebEI extends WebView {
         this.getSettings().setUseWideViewPort(true);
         this.getSettings().setLoadWithOverviewMode(true);
         this.getSettings().setDomStorageEnabled(true);
+        this.getSettings().setAppCacheEnabled(true);
+        this.getSettings().setDatabaseEnabled(true);
+        this.getSettings().setGeolocationEnabled(true);
+        this.getSettings().setGeolocationDatabasePath(getContext().getFilesDir().getPath());
         this.setWebContentsDebuggingEnabled(shared.getBoolean("keyDebugMode", false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);

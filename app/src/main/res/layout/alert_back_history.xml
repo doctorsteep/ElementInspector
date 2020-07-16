@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:maxHeight="280dp">
+    android:maxHeight="280dp"
+    android:background="@color/windowBackground">
 
     <TextView
         android:layout_width="match_parent"

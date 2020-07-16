@@ -30,4 +30,9 @@
 
     <color name="about_app_name">#222222</color>
     <color name="about_app_work">#888888</color>
+
+    <color name="title_remove">#000000</color>
+    <color name="message_remove">#7A000000</color>
+
+    <color name="tint_divider_round">#C7C7C7</color>
 </resources>

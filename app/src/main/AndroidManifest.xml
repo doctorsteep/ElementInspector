@@ -5,6 +5,12 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_GPS"/>
+    <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
 
     <application
@@ -39,7 +45,19 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="http" android:path="/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
                 <data android:scheme="https" android:path="/"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="https" android:path="/*"/>
             </intent-filter>
         </activity>
         <activity
@@ -65,6 +83,11 @@
         <activity
             android:name=".RemoveAdsActivity"
             android:label="@string/title_remove_ads"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize|locale"/>
+        <activity
+            android:name=".TabsActivity"
+            android:label="@string/title_tabs"
             android:windowSoftInputMode="stateHidden"
             android:configChanges="orientation|screenSize|locale"/>
     </application>

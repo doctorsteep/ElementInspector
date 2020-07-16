@@ -1,15 +1,21 @@
 package com.doctorsteep.elementinspector;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.TooltipCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -23,6 +29,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.ConsoleMessage;
+import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -33,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +57,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.appbar.AppBarLayout;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,9 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar mProgress;
     private ImageView imageSsl;
     private TextView textUrl;
-    private LinearLayout linBottomMenu, linBottomMenuButtons;
-
-    private Button btnSourcePage, btnConsole;
+    private LinearLayout linBottomMenu;
 
     private ImageView actionHome, actionMore;
     private ImageView menuBack, menuForward, menuRefresh;
@@ -80,6 +87,17 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences shared;
     private SharedPreferences sharedADS;
 
+    private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION};
+
+    // ПОИСК ПО СТРАНИЦЕ
+    private LinearLayout linMainIncludeFindToPage;
+    private EditText editFind;
+    private ImageView imageFindBack, imageFindNext, imageFindClose;
+    private TextView textFind;
+
+    private TextView textTabs;
+    private RelativeLayout actionTabs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,10 +111,6 @@ public class MainActivity extends AppCompatActivity {
         imageSsl = findViewById(R.id.imageSsl);
         textUrl = findViewById(R.id.textUrl);
         linBottomMenu = findViewById(R.id.linBottomMenu);
-        linBottomMenuButtons = findViewById(R.id.linBottomMenuButtons);
-
-        btnSourcePage = findViewById(R.id.btnSourcePage);
-        btnConsole = findViewById(R.id.btnConsole);
 
         actionHome = findViewById(R.id.actionHome);
         actionMore = findViewById(R.id.actionMore);
@@ -104,6 +118,18 @@ public class MainActivity extends AppCompatActivity {
         menuBack = findViewById(R.id.menuBack);
         menuForward = findViewById(R.id.menuForward);
         menuRefresh = findViewById(R.id.menuRefresh);
+
+        textTabs = findViewById(R.id.textTabs);
+        actionTabs = findViewById(R.id.actionTabs);
+
+        // ПОИСК ПО СТРАНИЦЕ-------------------------------------------------------------------------------------
+        linMainIncludeFindToPage = findViewById(R.id.mainIncludeFindToPage);
+        editFind = findViewById(R.id.editFind);
+        imageFindBack = findViewById(R.id.actionFindBack);
+        imageFindNext = findViewById(R.id.actionFindNext);
+        imageFindClose = findViewById(R.id.actionFindClose);
+        textFind = findViewById(R.id.textFind);
+        // ПОИСК ПО СТРАНИЦЕ-------------------------------------------------------------------------------------
 
         shared = PreferenceManager.getDefaultSharedPreferences(this);
         sharedADS = getSharedPreferences("ads", Context.MODE_PRIVATE);
@@ -114,14 +140,16 @@ public class MainActivity extends AppCompatActivity {
             MobileAds.initialize(this, "ca-app-pub-2543059856849154~8614667321");
             mAd = new InterstitialAd(this);
             mAd.setAdUnitId("ca-app-pub-2543059856849154/2773870051");
-            mAd.loadAd(new AdRequest.Builder().addTestDevice("4CB43C609CC4CB3704551CA0604A1D44").build());
+            mAd.loadAd(new AdRequest.Builder().addTestDevice("C28C687B0AF29F93B8AC8D5C9C195D71").build());
             mAd.setAdListener(new AdListener() {
                 @Override
                 public void onAdClosed() {
-                    mAd.loadAd(new AdRequest.Builder().addTestDevice("4CB43C609CC4CB3704551CA0604A1D44").build());
+                    mAd.loadAd(new AdRequest.Builder().addTestDevice("C28C687B0AF29F93B8AC8D5C9C195D71").build());
                     }
             });
         }
+
+        closeFindToPage();
 
         popupMore = new PopupMenu(MainActivity.this, actionMore);
         popupMore.inflate(R.menu.main_more);
@@ -172,6 +200,16 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.actionExit) {
                     finish();
                 }
+                if (item.getItemId() == R.id.actionFindToPage) {
+                    if (linMainIncludeFindToPage.getVisibility() == View.GONE) {
+                        openFindToPage();
+                    } else {
+                        closeFindToPage();
+                    }
+                }
+                if (item.getItemId() == R.id.actionHistory) {
+                    new BackHistory(MainActivity.this, mWeb, backHistoryList);
+                }
                 return true;
             }
         });
@@ -198,6 +236,27 @@ public class MainActivity extends AppCompatActivity {
             }
             mWeb.setWebViewClient(new WebClient());
             mWeb.setWebChromeClient(new WebChrome());
+
+            mWeb.setFindListener(new WebView.FindListener() {
+                @Override
+                public void onFindResultReceived(final int i, final int i1, final boolean b) {
+                    if (i1 != 0) {
+                        textFind.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textFind.setText(i + 1 + " / " + i1);
+                            }
+                        });
+                    } else {
+                        textFind.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textFind.setText("0 / 0");
+                            }
+                        });
+                    }
+                }
+            });
         }
         if (mProgress != null) {
             hideProgress();
@@ -235,6 +294,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        if (editFind != null) {
+            editFind.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if ((event.getAction() == KeyEvent.ACTION_DOWN) && ((keyCode == KeyEvent.KEYCODE_ENTER))) {
+                        searchFindToPage();
+                    }
+                    return false;
+                }
+            });
+        }
 
         if (menuBack != null) {
             TooltipCompat.setTooltipText(menuBack, getString(R.string.tooltip_back_page));
@@ -244,6 +314,13 @@ public class MainActivity extends AppCompatActivity {
         }
         if (menuRefresh != null) {
             TooltipCompat.setTooltipText(menuRefresh, getString(R.string.tooltip_refresh_page));
+        }
+
+        if (imageFindBack != null) {
+            TooltipCompat.setTooltipText(imageFindBack, getString(R.string.tooltip_back_find));
+        }
+        if (imageFindNext != null) {
+            TooltipCompat.setTooltipText(imageFindNext, getString(R.string.tooltip_next_find));
         }
 
 
@@ -264,6 +341,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+        actionTabs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TabsActivity.class));
             }
         });
 
@@ -298,34 +381,60 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-        // Content menu bottom
-        btnSourcePage.setOnClickListener(new View.OnClickListener() {
+        imageFindBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWeb.runJS(JSManager.SOURCE);
+                mWeb.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWeb.findNext(false);
+                    }
+                });
             }
         });
-        btnConsole.setOnClickListener(new View.OnClickListener() {
+        imageFindNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new WebEIConsole(MainActivity.this, mWeb, consoleList);
+                mWeb.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWeb.findNext(true);
+                    }
+                });
             }
         });
+        imageFindClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeFindToPage();
+                EditSearchManager.hideKeyboard(MainActivity.this);
+            }
+        });
+
+
+
+        if (ContextCompat.checkSelfPermission(this, permissions[0]) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, permissions, 5);
+        } else {
+
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (mWeb.canGoBack()) {
-            mWeb.post(new Runnable() {
-                @Override
-                public void run() {
-                    mWeb.goBack();
-                }
-            });
+        if (linMainIncludeFindToPage.getVisibility() == View.GONE) {
+            if (mWeb.canGoBack()) {
+                mWeb.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWeb.goBack();
+                    }
+                });
+            } else {
+                super.onBackPressed();
+            }
         } else {
-            super.onBackPressed();
+            closeFindToPage();
         }
     }
 
@@ -357,6 +466,60 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+
+    // ПОИСК ПО СТРАНИЦЕ-------------------------------------------------------------------------------------
+    private void openFindToPage() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (linMainIncludeFindToPage.getVisibility() == View.GONE) {
+                    linMainIncludeFindToPage.setVisibility(View.VISIBLE);
+                    appbar.setVisibility(View.GONE);
+                    linBottomMenu.setVisibility(View.INVISIBLE);
+                    textUrl.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+    private void closeFindToPage() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (linMainIncludeFindToPage.getVisibility() == View.VISIBLE) {
+                    linMainIncludeFindToPage.setVisibility(View.GONE);
+                    appbar.setVisibility(View.VISIBLE);
+                    if (shared.getBoolean("keyViewBottomMenuBar", true) == true) {
+                        linBottomMenu.setVisibility(View.VISIBLE);
+                    } else {
+                        linBottomMenu.setVisibility(View.GONE);
+                    }
+                    textUrl.setVisibility(View.VISIBLE);
+                    editFind.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            editFind.setText("");
+                            searchFindToPage();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    private void searchFindToPage() {
+        mWeb.post(new Runnable() {
+            @Override
+            public void run() {
+                mWeb.findAll(editFind.getText().toString());
+            }
+        });
+        try {
+            Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
+            m.invoke(mWeb, true);
+        } catch (Exception e) {}
+    }
+    // ПОИСК ПО СТРАНИЦЕ-------------------------------------------------------------------------------------
 
 
 
@@ -472,6 +635,30 @@ public class MainActivity extends AppCompatActivity {
             consoleList.add(new ConsoleModel(consoleMessage.message(), consoleMessage.lineNumber(), consoleMessage.sourceId(), new Long(System.currentTimeMillis()/1000).toString(), typeConsole));
             return true;
         }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+            if (ContextCompat.checkSelfPermission(MainActivity.this, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this, permissions, 5);
+            } else {
+                AlertDialog alertGeolocation = new AlertDialog.Builder(MainActivity.this).create();
+                alertGeolocation.setTitle(getString(R.string.title_geolocation));
+                alertGeolocation.setMessage(String.format(getString(R.string.message_geolocation), origin));
+                alertGeolocation.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callback.invoke(origin, true, false);
+                    }
+                });
+                alertGeolocation.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callback.invoke(origin, false, false);
+                    }
+                });
+                alertGeolocation.show();
+            }
+        }
     }
 
 
@@ -549,30 +736,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        if (shared.getBoolean("keyViewBottomMenuBarButtons", false) == true && shared.getBoolean("keyViewBottomMenuBar", false) == true) {
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    linBottomMenuButtons.setVisibility(View.VISIBLE);
-                }
-            });
-            if (popupMore != null) {
-                popupMore.getMenu().findItem(R.id.actionConsole).setVisible(false);
-                popupMore.getMenu().findItem(R.id.actionSourcePage).setVisible(false);
-            }
-        } else {
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    linBottomMenuButtons.setVisibility(View.GONE);
-                }
-            });
-            if (popupMore != null) {
-                popupMore.getMenu().findItem(R.id.actionConsole).setVisible(true);
-                popupMore.getMenu().findItem(R.id.actionSourcePage).setVisible(true);
-            }
-        }
-        if (shared.getBoolean("keyViewBottomMenuBar", false) == true) {
+
+
+        if (shared.getBoolean("keyViewBottomMenuBar", true) == true) {
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -587,7 +753,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        if (shared.getBoolean("keyRoundedDisplay", false) == true && shared.getBoolean("keyViewBottomMenuBar", false) == false) {
+
+
+        if (shared.getBoolean("keyRoundedDisplay", false) == true && shared.getBoolean("keyViewBottomMenuBar", true) == false) {
             textUrl.setPadding(50, 3, 3, 7);
         } else {
             textUrl.setPadding(7, 3, 3, 7);

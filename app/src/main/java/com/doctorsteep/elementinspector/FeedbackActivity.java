@@ -18,7 +18,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TextInputEditText editMessage, editEmail;
-    private Button buttonSend;
+    private Button buttonSend, buttonHelp;
 
     private String EMAIL_FEEDBACK = "steepdoctor@gmail.com";
 
@@ -31,6 +31,7 @@ public class FeedbackActivity extends AppCompatActivity {
         editMessage = findViewById(R.id.editMessage);
         editEmail = findViewById(R.id.editEmail);
         buttonSend = findViewById(R.id.buttonSendFeedback);
+        buttonHelp = findViewById(R.id.buttonHelp);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -62,12 +63,20 @@ public class FeedbackActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), getString(R.string.feedback_error_send), Toast.LENGTH_LONG).show();
                         }
                     } else {
+                        // error
                         editEmail.setError(getString(R.string.feedback_email_invalid));
                     }
                 } else {
                     // error
                     editMessage.setError(getString(R.string.feedback_message_error));
                 }
+            }
+        });
+
+        buttonHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FeedbackActivity.this, HelpActivity.class));
             }
         });
     }

@@ -21,13 +21,6 @@ public class SettingsFragment extends PreferenceFragment {
         Preference keyAboutApp = findPreference("keyAboutApp");
         Preference keyRemoveAds = findPreference("keyRemoveAds");
         Preference keyViewBottomMenuBar = findPreference("keyViewBottomMenuBar");
-        final Preference keyViewBottomMenuBarButtons = findPreference("keyViewBottomMenuBarButtons");
-
-        if (keyViewBottomMenuBar.getSharedPreferences().getBoolean("keyViewBottomMenuBar", false)) {
-            keyViewBottomMenuBarButtons.setEnabled(true);
-        } else {
-            keyViewBottomMenuBarButtons.setEnabled(false);
-        }
 
         keyAboutApp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -40,18 +33,6 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 getActivity().startActivity(new Intent(getActivity(), RemoveAdsActivity.class));
-                return false;
-            }
-        });
-
-        keyViewBottomMenuBar.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (preference.getSharedPreferences().getBoolean("keyViewBottomMenuBar", false)) {
-                    keyViewBottomMenuBarButtons.setEnabled(true);
-                } else {
-                    keyViewBottomMenuBarButtons.setEnabled(false);
-                }
                 return false;
             }
         });
